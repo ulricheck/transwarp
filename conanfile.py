@@ -7,10 +7,12 @@ class TranswarpConan(ConanFile):
     name = "transwarp"
     version = "1.8.0"
     description = "Conan package for bloomen/transwarp."
-    url = "https://github.com/bloomen/transwarp"
+    url = "https://github.com/ulricheck/transwarp"
     license = "MIT"
     settings = "arch", "build_type", "compiler", "os"
     generators = "cmake"
+    exports_sources = "src/*", "CMakeLists.txt"
+    no_copy_source = True
 
     def source(self):
         zip_name = "%s.zip" % self.version
@@ -18,6 +20,16 @@ class TranswarpConan(ConanFile):
         unzip(zip_name)
         os.unlink(zip_name)
 
+    def build(self): # this is not building a library, just tests and examples
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
+        cmake.test()
+
     def package(self):
         include_folder = "%s-%s/src" % (self.name, self.version)
         self.copy("*.h", dst="include", src=include_folder)
+
+    def package_id(self):
+        self.info.header_only()
+
