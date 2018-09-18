@@ -1,4 +1,4 @@
-from conans import ConanFile
+from conans import ConanFile, CMake
 from conans.tools import download, unzip
 import os
 
@@ -11,7 +11,7 @@ class TranswarpConan(ConanFile):
     license = "MIT"
     settings = "arch", "build_type", "compiler", "os"
     generators = "cmake"
-    exports_sources = "src/*", "CMakeLists.txt"
+    exports_sources = "src/*", "CMakeLists.txt", "examples/*"
     no_copy_source = True
 
     def source(self):
